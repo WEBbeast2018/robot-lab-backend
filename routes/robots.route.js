@@ -3,14 +3,14 @@ const data = require('../db').robots;
 
 router.route('/robots')
   .get((req, res) => {
-    res.send(JSON.stringify(data))
+    res.json(data);
   });
 
 router.route('/robots/:id')
   .get((req, res) => {
     const id = parseInt(req.params.id);
     const robot = data.find(r => r.id === id);
-    res.send(JSON.stringify(robot));
+    res.json(robot);
   })
   .put((req, res) => {
     const id = parseInt(req.params.id);
@@ -21,7 +21,7 @@ router.route('/robots/:id')
       name: req.body.name,
     };
     (index === -1) ? data.push(item) : data[index] = item;
-    res.send(JSON.stringify(item));
+    res.json(item);
   })
   .delete((req, res) => {
     const id = parseInt(req.params.id);
