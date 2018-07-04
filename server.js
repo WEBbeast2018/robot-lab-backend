@@ -11,7 +11,7 @@ router.route('/parts')
 
 router.route('/robots')
   .get((req, res) => {
-    res.send(JSON.stringify(db.parts))
+    res.send(JSON.stringify(db.robots))
   });
 
 router.route('/robots/:id')
