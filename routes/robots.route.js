@@ -1,27 +1,31 @@
 const router = require('express').Router();
 const data = require('../db').robots;
 
+function createItem(req) {
+  return {
+    id,
+    age: req.body.age,
+    name: req.body.name,
+  };
+}
+
 router.route('/robots')
   .get((req, res) => {
-    res.send(JSON.stringify(data))
+    res.json(data);
   });
 
 router.route('/robots/:id')
   .get((req, res) => {
     const id = parseInt(req.params.id);
-    const robot = data.find(r => r.id === id);
-    res.send(JSON.stringify(robot));
+    const item = data.find(item => item.id === id);
+    res.json(item);
   })
   .put((req, res) => {
     const id = parseInt(req.params.id);
-    const index = data.findIndex(post => post.id === id);
-    const item = {
-      id,
-      age: req.body.age,
-      name: req.body.name,
-    };
+    const index = data.findIndex(item => item.id === id);
+    const item = createItem(req);
     (index === -1) ? data.push(item) : data[index] = item;
-    res.send(JSON.stringify(item));
+    res.json(item);
   })
   .delete((req, res) => {
     const id = parseInt(req.params.id);
@@ -30,7 +34,7 @@ router.route('/robots/:id')
     if(index !== -1) {
       deletedItem = data.robots.splice(index, 1);
     }
-    res.send(deletedItem);
+    res.json(data);
   });
 
 module.exports = router;

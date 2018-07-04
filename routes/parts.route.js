@@ -1,35 +1,39 @@
 const router = require('express').Router();
-const db = require('../db');
+const data = require('../db').parts;
+
+function createItem(req) {
+  return {
+    id,
+    age: req.body.age,
+    name: req.body.name,
+    cpu: 'i5'
+  };
+}
 
 router.route('/parts')
   .get((req, res) => {
-    res.send(JSON.stringify(db.parts))
+    res.json(data);
   });
-  // task: add crud
 
 router.route('/parts/:id')
   .get((req, res) => {
     const id = parseInt(req.params.id);
-    const robot = db.parts.find(p => p.id === id);
-    res.send(JSON.stringify(robot));
+    const item = data.find(item => item.id === id);
+    res.json(item);
   })
   .put((req, res) => {
     const id = parseInt(req.params.id);
-    const index = db.parts.findIndex(p => p.id === id);
-    const item = {
-      id,
-      age: req.body.age,
-      name: req.body.name,
-    };
-    (index === -1) ? db.parts.push(item) : db[index] = item;
-    res.send(JSON.stringify(item));
+    const index = data.findIndex(item => item.id === id);
+    const item = createItem(req);
+    (index === -1) ? data.push(item) : data[index] = item;
+    res.json(item);
   })
   .delete((req, res) => {
     const id = parseInt(req.params.id);
-    const index  = db.parts.findIndex(p => p.id === id);
+    const index = data.findIndex(p => p.id === id);
     let deletedItem = {};
-    if(index !== -1) {
-      deletedItem = db.parts.splice(index, 1);
+    if (index !== -1) {
+      deletedItem = data.splice(index, 1);
     }
     res.send(deletedItem);
   });
