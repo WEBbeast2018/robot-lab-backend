@@ -1,35 +1,35 @@
 const router = require('express').Router();
-const db = require('../db');
+const data = require('../db').robots;
 
 router.route('/robots')
   .get((req, res) => {
-    res.send(JSON.stringify(db.robots))
+    res.send(JSON.stringify(data))
   });
 
 router.route('/robots/:id')
   .get((req, res) => {
     const id = parseInt(req.params.id);
-    const robot = db.robots.find(r => r.id === id);
+    const robot = data.find(r => r.id === id);
     res.send(JSON.stringify(robot));
   })
   .put((req, res) => {
     const id = parseInt(req.params.id);
-    const index = db.robots.findIndex(post => post.id === id);
+    const index = data.findIndex(post => post.id === id);
     const item = {
       id,
       age: req.body.age,
       name: req.body.name,
     };
-    (index === -1) ? db.robots.push(item) : db[index] = item;
+    (index === -1) ? data.push(item) : data[index] = item;
     res.send(JSON.stringify(item));
   })
   .delete((req, res) => {
     const id = parseInt(req.params.id);
-    const index  = db.findIndex(post => post.id === id);
+    const index  = data.findIndex(post => post.id === id);
     if(index !== -1) {
-      db.robots.splice(index, 1);
+      data.splice(index, 1);
     }
-    res.send(JSON.stringify(db));
+    res.send(200);
   });
 
 module.exports = router;
