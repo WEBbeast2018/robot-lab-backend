@@ -5,6 +5,11 @@ app.use(express.json());
 const partsRouter = require('./routes/parts.route');
 const robotsRouter = require('./routes/robots.route');
 
+app.use((req, res, next) => {
+  // task: save to a file
+  console.log('Time:', Date.now());
+  next();
+});
 app.use('/api', partsRouter);
 app.use('/api', robotsRouter);
 
