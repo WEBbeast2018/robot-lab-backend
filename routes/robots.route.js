@@ -25,11 +25,12 @@ router.route('/robots/:id')
   })
   .delete((req, res) => {
     const id = parseInt(req.params.id);
-    const index  = db.findIndex(post => post.id === id);
+    const index  = db.robots.findIndex(post => post.id === id);
+    let deletedItem = {};
     if(index !== -1) {
-      db.robots.splice(index, 1);
+      deletedItem = db.robots.splice(index, 1);
     }
-    res.send(JSON.stringify(db));
+    res.send(deletedItem);
   });
 
 module.exports = router;
