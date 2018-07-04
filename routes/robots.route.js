@@ -26,10 +26,11 @@ router.route('/robots/:id')
   .delete((req, res) => {
     const id = parseInt(req.params.id);
     const index  = data.findIndex(post => post.id === id);
+    let deletedItem = {};
     if(index !== -1) {
-      data.splice(index, 1);
+      deletedItem = data.robots.splice(index, 1);
     }
-    res.send(200);
+    res.send(deletedItem);
   });
 
 module.exports = router;
