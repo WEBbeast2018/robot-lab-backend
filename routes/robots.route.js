@@ -34,7 +34,7 @@ router.route('/robots/:id')
     if(index !== -1) {
       deletedItem = data.robots.splice(index, 1);
     }
-    res.json(data);
+    res.json(deletedItem);
   });
 
 module.exports = router;
