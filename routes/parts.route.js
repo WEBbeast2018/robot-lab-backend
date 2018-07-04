@@ -21,12 +21,17 @@ router.route('/parts/:id')
     const item = data.find(item => item.id === id);
     res.json(item);
   })
-  .put((req, res) => {
+  .put((req, res, next) => {
     const id = parseInt(req.params.id);
-    const index = data.findIndex(item => item.id === id);
-    const item = createItem(req);
-    (index === -1) ? data.push(item) : data[index] = item;
-    res.json(item);
+    if(id && !isNaN(id)) {
+      const index = data.findIndex(item => item.id === id);
+      const item = createItem(req);
+      (index === -1) ? data.push(item) : data[index] = item;
+      res.json(item);
+    } else {
+      const err = Error('wrong URI');
+      next(err);
+    }
   })
   .delete((req, res) => {
     const id = parseInt(req.params.id);
