@@ -10,9 +10,18 @@ app.use((req, res, next) => {
   console.log('Time:', Date.now());
   next();
 });
+
 app.use('/api', partsRouter);
 app.use('/api', robotsRouter);
 
+app.get('/b', (req, res) => {
+  throw new Error()
+});
+app.use((err, req, res, next) => {
+  console.error(`Something bad happened: ${err}`);
+  res.status(500).send('bad stuff happened');
+  next();
+});
 app.listen(3000,
   () => console.log('Robot labs API server listening on port 3000!')
 );
