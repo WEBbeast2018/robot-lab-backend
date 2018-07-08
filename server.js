@@ -3,6 +3,27 @@ const express = require('express');
 const errorHandler = require('./errorHandling');
 const logger = require('./logger');
 const app = express();
+const MongoClient = require('mongodb').MongoClient;
+// Connection URL
+const url = 'mongodb://localhost:27017';
+// Database Name
+const dbName = 'test';
+
+function getAllItems(db, callback) {
+  const cursor = db.collection('items').find();
+  cursor.each((err, doc) => {
+    console.log(doc);
+  });
+  callback();
+}
+
+MongoClient.connect(url, function(err, client) {
+  console.log("Connected successfully to server");
+  const db = client.db(dbName);
+  getAllItems(db, function() {
+    client.close();
+  })
+});
 
 
 // json parser middleware
