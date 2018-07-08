@@ -3,29 +3,36 @@ const express = require('express');
 const errorHandler = require('./errorHandling');
 const logger = require('./logger');
 const app = express();
-const mongoose = require('mongoose');
+const mongoClient = require('mongodb').MongoClient;
+// Connection URL
+const url = 'mongodb://localhost:27017';
+// Database Name
+const dbName = 'robo';
 
-// set connection
-mongoose.connect('mongodb://localhost/robo');
-const db = mongoose.connection;
-db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', function() {
-  console.log('we are connected!');
+mongoClient.connect(url, function (err, client) {
+  if (err) {
+    console.error('Cannot connect to MongoDB!');
+    return;
+  }
+  console.log("Connected successfully to server");
+  const db = client.db(dbName);
+  getAllItems(db, function () {
+    client.close();
+  })
 });
 
+function getAllItems(db, callback) {
+  const cursor = db.collection('parts').find();
+  cursor.each((err, doc) => {
+    if (err) {
+      console.error('Cannot get parts!');
+      return;
+    }
+    console.log(doc);
+  });
+  callback();
+}
 
-// create schema
-const PartSchema = mongoose.Schema({
-  cpu: String,
-  engine: String,
-  id: Number,
-  name: String,
-  type: String
-});
-const Part = mongoose.model('Part', PartSchema);
-Part.find({}, (err, parts) => {
-  console.log('here are the parts!', parts)
-});
 
 // json parser middleware
 app.use(express.json());
