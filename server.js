@@ -7,10 +7,10 @@ const MongoClient = require('mongodb').MongoClient;
 // Connection URL
 const url = 'mongodb://localhost:27017';
 // Database Name
-const dbName = 'test';
+const dbName = 'robo';
 
 function getAllItems(db, callback) {
-  const cursor = db.collection('items').find();
+  const cursor = db.collection('parts').find();
   cursor.each((err, doc) => {
     console.log(doc);
   });
