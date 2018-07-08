@@ -1,10 +1,11 @@
 const router = require('express').Router();
-const db = require('../db');
+const collection = require('../db').Part;
 
 router.route('/parts')
   .get((req, res) => {
-    res.send(JSON.stringify(db.parts))
+    collection.find({}, {_id:0}, (err, data) => {
+      res.json(data);
+    });
   });
-  // task: add crud
 
 module.exports = router;

@@ -1,3 +1,25 @@
+const mongoose = require('mongoose');
+
+// set connection
+mongoose.connect('mongodb://localhost:27017/robo', {useNewUrlParser:true});
+const db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function() {
+  console.log('we are connected!');
+});
+
+
+// create schema
+const PartSchema = mongoose.Schema({
+  cpu: String,
+  engine: String,
+  id: Number,
+  name: String,
+  type: String
+});
+const Part = mongoose.model('Part', PartSchema);
+
+
 const ROBOTS = [
   {
     id: 1,
@@ -54,47 +76,7 @@ const ROBOTS = [
   }
 ];
 
-
-const PARTS = [
-  {
-    cpu: 'i5',
-    engine: 'GPU',
-    id: 101,
-    name: 'Lidar',
-    type: 'Sensors'
-  },
-  {
-    cpu: 'Core 2 Duo',
-    engine: 'GPU',
-    id: 102,
-    name: 'Cytron 13A',
-    type: 'Cameras'
-  },
-  {
-    cpu: 'Core M',
-    engine: 'Volta',
-    id: 103,
-    name: 'LIDAR-Lite 3',
-    type: 'Control Systems'
-  },
-  {
-    cpu: 'Merom-L',
-    engine: 'Quadro',
-    id: 104,
-    name: 'Lidar',
-    type: 'hydraulics'
-  },
-  {
-    cpu: 'Penryn',
-    engine: 'Tesla',
-    id: 105,
-    name: 'Lynxmotion',
-    type: 'Pneumatics'
-  }
-];
-
-
 module.exports = {
-	parts: PARTS,
+  Part,
 	robots: ROBOTS
 };
